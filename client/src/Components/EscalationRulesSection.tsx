@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
 	Stack,
 	Button,
@@ -27,6 +28,7 @@ export const EscalationRulesSection = ({
 	onRulesChange,
 }: EscalationRulesSectionProps) => {
 	const theme = useTheme();
+	const { t } = useTranslation();
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const [editingRule, setEditingRule] = useState<EscalationRule | undefined>();
@@ -70,8 +72,8 @@ export const EscalationRulesSection = ({
 	return (
 		<>
 			<ConfigBox
-				title="Escalation Rules"
-				subtitle="Configure escalation alerts to send additional notifications if a server remains down"
+				title={t("pages.common.monitors.escalationRules.title")}
+				subtitle={t("pages.common.monitors.escalationRules.description")}
 				rightContent={
 					<Stack spacing={theme.spacing(LAYOUT.MD)} width="100%">
 						{/* Add Rule Button */}
@@ -80,13 +82,13 @@ export const EscalationRulesSection = ({
 							onClick={handleAddRule}
 							fullWidth
 						>
-							Add Escalation Rule
+							{t("pages.common.monitors.escalationRules.addButton")}
 						</Button>
 
 						{/* Rules List or Empty State */}
 						{rules.length === 0 ? (
 							<Typography variant="body2" color="textSecondary" sx={{ textAlign: "center", py: 2 }}>
-								No escalation rules configured
+								{t("pages.common.monitors.escalationRules.noRules")}
 							</Typography>
 						) : (
 							<Stack spacing={0}>
@@ -100,7 +102,7 @@ export const EscalationRulesSection = ({
 										>
 											<Stack flex={1}>
 												<Typography variant="body2" fontWeight={600}>
-													Send after {rule.afterMinutes} minute{rule.afterMinutes !== 1 ? 's' : ''}
+													{t("pages.common.monitors.escalationRules.table.time")} {rule.afterMinutes} {rule.afterMinutes === 1 ? "minute" : "minutes"}
 												</Typography>
 												<Typography variant="caption" color="textSecondary">
 													{getNotificationNames(rule.notificationIds)}

@@ -14,8 +14,11 @@ const escalationRuleSchema = z.object({
 	notificationIds: z
 		.array(z.string())
 		.min(1, "At least one notification is required"),
-	enabled: z.boolean().default(true),
-});
+	enabled: z.boolean().optional().default(true),
+}).transform((rule) => ({
+	...rule,
+	enabled: rule.enabled ?? true,
+}));
 
 // Common base schema for all monitor types
 const baseSchema = z.object({

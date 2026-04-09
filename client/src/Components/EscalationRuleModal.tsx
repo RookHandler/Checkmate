@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
 	Dialog,
 	DialogTitle,
@@ -31,6 +32,7 @@ export const EscalationRuleModal = ({
 	onClose,
 }: EscalationRuleModalProps) => {
 	const theme = useTheme();
+	const { t } = useTranslation();
 
 	const [timeValue, setTimeValue] = useState<number>(rule?.afterMinutes ?? 5);
 	const [selectedNotifications, setSelectedNotifications] = useState<Notification[]>(
@@ -54,11 +56,11 @@ export const EscalationRuleModal = ({
 		const newErrors: { time?: string; notifications?: string } = {};
 
 		if (!timeValue || timeValue < 1 || timeValue > 1440) {
-			newErrors.time = "Time must be between 1 and 1440 minutes";
+			newErrors.time = t("pages.common.monitors.escalationRules.modal.timeError");
 		}
 
 		if (selectedNotifications.length === 0) {
-			newErrors.notifications = "Select at least one notification channel";
+			newErrors.notifications = t("pages.common.monitors.escalationRules.modal.channelsError");
 		}
 
 		setErrors(newErrors);
@@ -90,8 +92,8 @@ export const EscalationRuleModal = ({
 		<Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
 			<DialogTitle>
 				{rule
-					? "Edit Escalation Rule"
-					: "Add Escalation Rule"}
+					? t("pages.common.monitors.escalationRules.modal.editTitle")
+					: t("pages.common.monitors.escalationRules.modal.addTitle")}
 			</DialogTitle>
 
 			<DialogContent>
@@ -100,7 +102,8 @@ export const EscalationRuleModal = ({
 					<Stack>
 						<TextField
 							type="number"
-							label="Minutes after downstart"
+							label={t("pages.common.monitors.escalationRules.modal.timeLabel")}
+							placeholder={t("pages.common.monitors.escalationRules.modal.timePlaceholder")}
 							value={timeValue}
 							onChange={(e) => {
 								setTimeValue(parseInt(e.target.value) || 0);
@@ -132,7 +135,8 @@ export const EscalationRuleModal = ({
 							renderInput={(params) => (
 								<TextField
 									{...params}
-									label="Notification channels"
+									label={t("pages.common.monitors.escalationRules.modal.channelsLabel")}
+									placeholder={t("pages.common.monitors.escalationRules.modal.channelsPlaceholder")}
 									error={!!errors.notifications}
 								/>
 							)}
@@ -146,10 +150,10 @@ export const EscalationRuleModal = ({
 
 			<DialogActions>
 				<Button onClick={handleClose} variant="outlined">
-					Cancel
+					{t("pages.common.monitors.escalationRules.modal.cancel")}
 				</Button>
 				<Button onClick={handleSave} variant="contained">
-					Save Rule
+					{t("pages.common.monitors.escalationRules.modal.save")}
 				</Button>
 			</DialogActions>
 		</Dialog>
